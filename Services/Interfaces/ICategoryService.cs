@@ -1,6 +1,6 @@
-﻿using BodyUpAPI.Dtos;
+﻿using ProteinProAPI.Dtos;
 
-namespace BodyUpAPI.Services.Interfaces;
+namespace ProteinProAPI.Services.Interfaces;
 
 public interface ICategoryService
 {

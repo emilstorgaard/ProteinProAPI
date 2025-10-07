@@ -1,7 +1,7 @@
-﻿using BodyUpAPI.Dtos;
-using BodyUpAPI.Models;
+﻿using ProteinProAPI.Dtos;
+using ProteinProAPI.Models;
 
-namespace BodyUpAPI.Mappers;
+namespace ProteinProAPI.Mappers;
 
 public static class SubCategoryMapper
 {

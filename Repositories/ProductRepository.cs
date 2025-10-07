@@ -1,9 +1,10 @@
-﻿using BodyUpAPI.Database;
-using BodyUpAPI.Models;
-using BodyUpAPI.Repositories.Interfaces;
+﻿using ProteinProAPI.Database;
+using ProteinProAPI.Dtos;
+using ProteinProAPI.Models;
+using ProteinProAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyUpAPI.Repositories;
+namespace ProteinProAPI.Repositories;
 
 public class ProductRepository : IProductRepository
 {
@@ -17,6 +18,66 @@ public class ProductRepository : IProductRepository
     public async Task<List<Product>> GetAllAsync()
     {
         return await _dbContext.Products.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetAllByPageSortAndFilterAsync(int page, int pageSize, string sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search)
+    {
+        if (page <= 0) page = 1;
+
+        IQueryable<Product> query = _dbContext.Products;
+
+        // Filtrér på price range
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => Convert.ToDecimal(p.Price) >= minPrice.Value);
+        }
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => Convert.ToDecimal(p.Price) <= maxPrice.Value);
+        }
+
+        // Filtrér på brand
+        if (!string.IsNullOrWhiteSpace(brand))
+        {
+            query = query.Where(p => p.Brand == brand);
+        }
+
+        // Filtrér på retailer
+        if (!string.IsNullOrWhiteSpace(retailer))
+        {
+            query = query.Where(p => p.Retailer == retailer);
+        }
+
+        // 🔎 Search filter (case insensitive)
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.ToLower();
+            query = query.Where(p =>
+                p.Name.ToLower().Contains(search) ||
+                p.Description.ToLower().Contains(search) ||
+                p.Brand.ToLower().Contains(search) ||
+                p.Retailer.ToLower().Contains(search));
+        }
+
+        // Sortering
+        query = sort?.ToLower() switch
+        {
+            "price-low" => query.OrderBy(p => Convert.ToDecimal(p.Price)),
+            "price-high" => query.OrderByDescending(p => Convert.ToDecimal(p.Price)),
+            _ => query.OrderBy(p => p.Id)
+        };
+
+        var totalProducts = await query.CountAsync();
+        var totalPages = totalProducts > 0
+            ? (int)Math.Ceiling(totalProducts / (double)pageSize)
+            : 1;
+
+        var products = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (totalProducts, totalPages, products);
     }
 
     public async Task<Product?> GetAsync(int id)

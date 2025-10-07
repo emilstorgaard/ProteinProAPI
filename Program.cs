@@ -1,8 +1,8 @@
-using BodyUpAPI.Database;
-using BodyUpAPI.Repositories;
-using BodyUpAPI.Repositories.Interfaces;
-using BodyUpAPI.Services;
-using BodyUpAPI.Services.Interfaces;
+using ProteinProAPI.Database;
+using ProteinProAPI.Repositories;
+using ProteinProAPI.Repositories.Interfaces;
+using ProteinProAPI.Services;
+using ProteinProAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public class Program

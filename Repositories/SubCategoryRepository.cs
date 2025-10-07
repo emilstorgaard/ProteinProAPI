@@ -1,9 +1,9 @@
-﻿using BodyUpAPI.Database;
-using BodyUpAPI.Models;
-using BodyUpAPI.Repositories.Interfaces;
+﻿using ProteinProAPI.Database;
+using ProteinProAPI.Models;
+using ProteinProAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyUpAPI.Repositories;
+namespace ProteinProAPI.Repositories;
 
 public class SubCategoryRepository : ISubCategoryRepository
 {

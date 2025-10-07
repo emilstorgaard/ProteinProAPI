@@ -1,9 +1,9 @@
-﻿using BodyUpAPI.Dtos;
-using BodyUpAPI.Mappers;
-using BodyUpAPI.Repositories.Interfaces;
-using BodyUpAPI.Services.Interfaces;
+﻿using ProteinProAPI.Dtos;
+using ProteinProAPI.Mappers;
+using ProteinProAPI.Repositories.Interfaces;
+using ProteinProAPI.Services.Interfaces;
 
-namespace BodyUpAPI.Services;
+namespace ProteinProAPI.Services;
 
 public class CategoryService : ICategoryService
 {

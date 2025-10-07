@@ -1,9 +1,10 @@
-﻿using BodyUpAPI.Dtos;
-using BodyUpAPI.Mappers;
-using BodyUpAPI.Repositories.Interfaces;
-using BodyUpAPI.Services.Interfaces;
+﻿using ProteinProAPI.Dtos;
+using ProteinProAPI.Mappers;
+using ProteinProAPI.Models;
+using ProteinProAPI.Repositories.Interfaces;
+using ProteinProAPI.Services.Interfaces;
 
-namespace BodyUpAPI.Services;
+namespace ProteinProAPI.Services;
 
 public class ProductsService : IProductService
 {
@@ -18,6 +19,24 @@ public class ProductsService : IProductService
     {
         var products = await _productRepository.GetAllAsync();
         return products.Select(product => ProductMapper.MapToDto(product)).ToList();
+    }
+
+    public async Task<(int TotalProducts, int TotalPages, List<ProductDto> Products)> GetProductsByPageSortAndFilterAsync(int page, int pageSize, string sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search)
+    {
+        var (totalProducts, totalPages, products) = await _productRepository.GetAllByPageSortAndFilterAsync(
+            page,
+            pageSize,
+            sort,
+            minPrice,
+            maxPrice,
+            brand,
+            retailer,
+            search
+        );
+
+        var productDtos = products.Select(product => ProductMapper.MapToDto(product)).ToList();
+
+        return (totalProducts, totalPages, productDtos);
     }
 
     public async Task<ProductDto> GetAsync(int id)

@@ -1,4 +1,4 @@
-﻿namespace BodyUpAPI.Models;
+﻿namespace ProteinProAPI.Models;
 
 public class ProductSubCategories
 {

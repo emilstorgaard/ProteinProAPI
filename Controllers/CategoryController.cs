@@ -1,8 +1,8 @@
-﻿using BodyUpAPI.Dtos;
-using BodyUpAPI.Services.Interfaces;
+﻿using ProteinProAPI.Dtos;
+using ProteinProAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BodyUpAPI.Controllers;
+namespace ProteinProAPI.Controllers;
 
 [Route("api/categories")]
 [ApiController]

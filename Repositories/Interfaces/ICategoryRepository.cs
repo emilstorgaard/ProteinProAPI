@@ -1,6 +1,6 @@
-﻿using BodyUpAPI.Models;
+﻿using ProteinProAPI.Models;
 
-namespace BodyUpAPI.Repositories.Interfaces;
+namespace ProteinProAPI.Repositories.Interfaces;
 
 public interface ICategoryRepository
 {

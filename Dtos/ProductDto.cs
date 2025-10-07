@@ -1,4 +1,4 @@
-﻿namespace BodyUpAPI.Dtos;
+﻿namespace ProteinProAPI.Dtos;
 
 public class ProductDto
 {

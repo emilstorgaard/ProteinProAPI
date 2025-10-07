@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BodyUpAPI.Migrations
+namespace ProteinProAPI.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -118,7 +118,7 @@ namespace BodyUpAPI.Migrations
                 {
                     { 1, "Udforsk vores udvalg af kosttilskud til styrke og muskelvækst", "Muskelopbygning", "/muskelopbygning" },
                     { 2, "Udforsk vores udvalg af sunde og lækre mad- og snackprodukter", "Mad & Snacks", "/mad-snacks" },
-                    { 3, "Udforsk vores udvalg af energigivende kosttilskud", "Energi", "/muskelopbygning" },
+                    { 3, "Udforsk vores udvalg af energigivende kosttilskud", "Energi", "/energi" },
                     { 4, "Udforsk vores udvalg af tilbehør", "Tilbehør", "/accessories" },
                     { 5, "Udforsk vores produkter som ikke er kategoriseret under de primære kategorier", "Andet", "/other" }
                 });

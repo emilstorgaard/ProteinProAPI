@@ -1,7 +1,7 @@
-﻿using BodyUpAPI.Models;
+﻿using ProteinProAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BodyUpAPI.Database;
+namespace ProteinProAPI.Database;
 
 public class ApplicationDbContext : DbContext
 {
