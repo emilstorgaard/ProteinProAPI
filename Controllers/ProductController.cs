@@ -1,6 +1,6 @@
-﻿using ProteinProAPI.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProteinProAPI.Dtos;
 using ProteinProAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ProteinProAPI.Controllers;
 
@@ -9,6 +9,7 @@ namespace ProteinProAPI.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
+    private const int PageSize = 20;
 
     public ProductController(IProductService productService)
     {
@@ -23,34 +24,42 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProductsByPage(int page = 1, string sort = "", decimal? minPrice = null, decimal? maxPrice = null, string? brand = null, string? retailer = null, string? search = null)
+    public async Task<IActionResult> GetProducts(
+        [FromQuery] int? categoryId,
+        [FromQuery] int? subCategoryId,
+        [FromQuery] int page = 1,
+        [FromQuery] string sort = "",
+        [FromQuery] int test = 1,
+        [FromQuery] decimal? minPrice = null,
+        [FromQuery] decimal? maxPrice = null,
+        [FromQuery] string? brand = null,
+        [FromQuery] string? retailer = null,
+        [FromQuery] string? search = null)
     {
-        const int pageSize = 20;
-        var (totalProducts, totalPages, products) = await _productService.GetProductsByPageSortAndFilterAsync(page, pageSize, sort, minPrice, maxPrice, brand, retailer, search);
+        var (totalProducts, totalPages, products) = await _productService.GetProductsAsync(
+            categoryId,
+            subCategoryId,
+            page,
+            PageSize,
+            sort,
+            minPrice,
+            maxPrice,
+            brand,
+            retailer,
+            search
+        );
 
         var result = new
         {
+            CategoryId = categoryId,
+            SubCategoryId = subCategoryId,
             TotalProducts = totalProducts,
             TotalPages = totalPages,
             CurrentPage = page,
-            PageSize = pageSize,
+            PageSize,
             Products = products
         };
 
-        return Ok(result);
-    }
-
-    [HttpGet("category/{categoryId:int}")]
-    public async Task<ActionResult<List<ProductDto>>> GetAllProductsByCategoryId(int categoryId)
-    {
-        var result = await _productService.GetAllByCategoryIdAsync(categoryId);
-        return Ok(result);
-    }
-
-    [HttpGet("subcategory/{subCategoryId:int}")]
-    public async Task<ActionResult<List<ProductDto>>> GetAllProductsBysUBCategoryId(int subCategoryId)
-    {
-        var result = await _productService.GetAllBySubCategoryIdAsync(subCategoryId);
         return Ok(result);
     }
 

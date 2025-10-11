@@ -5,8 +5,6 @@ namespace ProteinProAPI.Repositories.Interfaces;
 public interface IProductRepository
 {
     Task<List<Product>> GetAllAsync();
-    Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetAllByPageSortAndFilterAsync(int page, int pageSize, string sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search);
+    Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetProductsAsync(int? categoryId, int? subCategoryId, int page, int pageSize, string? sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search);
     Task<Product?> GetAsync(int id);
-    Task<List<Product>> GetAllByCategoryIdAsync(int categoryId);
-    Task<List<Product>> GetAllBySubCategoryIdAsync(int subCategoryId);
 }

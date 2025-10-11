@@ -1,8 +1,7 @@
-﻿using ProteinProAPI.Database;
-using ProteinProAPI.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using ProteinProAPI.Database;
 using ProteinProAPI.Models;
 using ProteinProAPI.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace ProteinProAPI.Repositories;
 
@@ -20,35 +19,56 @@ public class ProductRepository : IProductRepository
         return await _dbContext.Products.AsNoTracking().ToListAsync();
     }
 
-    public async Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetAllByPageSortAndFilterAsync(int page, int pageSize, string sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search)
+    public async Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetProductsAsync(
+        int? categoryId,
+        int? subCategoryId,
+        int page,
+        int pageSize,
+        string? sort,
+        decimal? minPrice,
+        decimal? maxPrice,
+        string? brand,
+        string? retailer,
+        string? search)
     {
         if (page <= 0) page = 1;
 
-        IQueryable<Product> query = _dbContext.Products;
+        IQueryable<Product> query;
 
-        // Filtrér på price range
+        if (subCategoryId.HasValue)
+        {
+            query = _dbContext.ProductSubCategories
+                .AsNoTracking()
+                .Where(psc => psc.SubCategoryId == subCategoryId.Value)
+                .Select(psc => psc.Product)
+                .Distinct();
+        }
+        else if (categoryId.HasValue)
+        {
+            query = _dbContext.ProductSubCategories
+                .AsNoTracking()
+                .Where(psc => psc.SubCategory.SubCategoryCategories
+                    .Any(scc => scc.CategoryId == categoryId.Value))
+                .Select(psc => psc.Product)
+                .Distinct();
+        }
+        else
+        {
+            query = _dbContext.Products.AsQueryable();
+        }
+
         if (minPrice.HasValue)
-        {
             query = query.Where(p => Convert.ToDecimal(p.Price) >= minPrice.Value);
-        }
+
         if (maxPrice.HasValue)
-        {
             query = query.Where(p => Convert.ToDecimal(p.Price) <= maxPrice.Value);
-        }
 
-        // Filtrér på brand
         if (!string.IsNullOrWhiteSpace(brand))
-        {
             query = query.Where(p => p.Brand == brand);
-        }
 
-        // Filtrér på retailer
         if (!string.IsNullOrWhiteSpace(retailer))
-        {
             query = query.Where(p => p.Retailer == retailer);
-        }
 
-        // 🔎 Search filter (case insensitive)
         if (!string.IsNullOrWhiteSpace(search))
         {
             search = search.ToLower();
@@ -59,7 +79,6 @@ public class ProductRepository : IProductRepository
                 p.Retailer.ToLower().Contains(search));
         }
 
-        // Sortering
         query = sort?.ToLower() switch
         {
             "price-low" => query.OrderBy(p => Convert.ToDecimal(p.Price)),
@@ -83,26 +102,5 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetAsync(int id)
     {
         return await _dbContext.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-    }
-
-    public async Task<List<Product>> GetAllByCategoryIdAsync(int categoryId)
-    {
-        return await _dbContext.ProductSubCategories
-            .AsNoTracking()
-            .Where(psc => psc.SubCategory.SubCategoryCategories
-                .Any(scc => scc.CategoryId == categoryId))
-            .Select(psc => psc.Product)
-            .Distinct()
-            .ToListAsync();
-    }
-
-    public async Task<List<Product>> GetAllBySubCategoryIdAsync(int subCategoryId)
-    {
-        return await _dbContext.ProductSubCategories
-        .AsNoTracking()
-        .Where(psc => psc.SubCategoryId == subCategoryId)
-        .Select(psc => psc.Product)
-        .Distinct()
-        .ToListAsync();
     }
 }
