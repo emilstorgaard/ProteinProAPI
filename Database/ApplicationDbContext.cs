@@ -24,16 +24,16 @@ public class ApplicationDbContext : DbContext
 
         // Categories
         modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Name = "Proteinpulver", Keywords = "protein, whey, isolat, proteinpulver" },
-            new Category { Id = 2, Name = "Kreatin", Keywords = "kreatin, creatine, creapure" },
-            new Category { Id = 3, Name = "Weight gainer", Keywords = "weight gainer, mass gainer, vægttilskud, gainer" },
-            new Category { Id = 4, Name = "Pre workout", Keywords = "pre workout, preworkout" },
-            new Category { Id = 5, Name = "Proteinbarer", Keywords = "proteinbar, protein bar, barer, protein snack" },
-            new Category { Id = 6, Name = "Elektrolytter", Keywords = "elektrolyt, elektrolytter, electrolyte" },
-            new Category { Id = 7, Name = "Gel", Keywords = "gel" },
-            new Category { Id = 8, Name = "Snacks", Keywords = "snack, nødder, tørret frugt, bars, chips" },
-            new Category { Id = 9, Name = "Tilbehør", Keywords = "shaker, bottle" },
-            new Category { Id = 10, Name = "Andet", Keywords = "" }
+            new Category { Id = 1, Name = "Proteinpulver", Image = "proteinpulver.jpg", Keywords = "protein, whey, isolat, proteinpulver" },
+            new Category { Id = 2, Name = "Kreatin", Image = "kreatin.jpg", Keywords = "kreatin, creatine, creapure" },
+            new Category { Id = 3, Name = "Weight gainer", Image = "weightGainer.jpg", Keywords = "weight gainer, mass gainer, vægttilskud, gainer" },
+            new Category { Id = 4, Name = "Pre workout", Image = "preworkout.jpg", Keywords = "pre workout, preworkout" },
+            new Category { Id = 5, Name = "Proteinbarer", Image = "proteinbar.jpg", Keywords = "proteinbar, protein bar, barer, protein snack" },
+            new Category { Id = 6, Name = "Elektrolytter", Image = "elektrolytter.jpg", Keywords = "elektrolyt, elektrolytter, electrolyte" },
+            new Category { Id = 7, Name = "Gels", Image = "gel.jpg", Keywords = "gel" },
+            new Category { Id = 8, Name = "Snacks", Image = "snacks.jpg", Keywords = "snack, nødder, tørret frugt, bars, chips" },
+            new Category { Id = 9, Name = "Tilbehør", Image = "tilbehør.jpg", Keywords = "shaker, bottle" },
+            new Category { Id = 10, Name = "Andet", Image = "other.jpg", Keywords = "" }
         );
     }
 }
