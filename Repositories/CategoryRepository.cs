@@ -16,19 +16,11 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<List<Category>> GetAllAsync()
     {
-        return await _dbContext.Categories
-        .Include(c => c.SubCategoryCategories)
-            .ThenInclude(sc => sc.SubCategory)
-        .AsNoTracking()
-        .ToListAsync();
+        return await _dbContext.Categories.AsNoTracking().ToListAsync();
     }
 
     public async Task<Category?> GetAsync(int id)
     {
-        return await _dbContext.Categories
-        .Include(c => c.SubCategoryCategories)
-            .ThenInclude(sc => sc.SubCategory)
-        .AsNoTracking()
-        .FirstOrDefaultAsync(c => c.Id == id);
+        return await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
     }
 }

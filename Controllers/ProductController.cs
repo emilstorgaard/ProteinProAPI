@@ -26,10 +26,8 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetProducts(
         [FromQuery] int? categoryId,
-        [FromQuery] int? subCategoryId,
         [FromQuery] int page = 1,
         [FromQuery] string sort = "",
-        [FromQuery] int test = 1,
         [FromQuery] decimal? minPrice = null,
         [FromQuery] decimal? maxPrice = null,
         [FromQuery] string? brand = null,
@@ -38,7 +36,6 @@ public class ProductController : ControllerBase
     {
         var (totalProducts, totalPages, products) = await _productService.GetProductsAsync(
             categoryId,
-            subCategoryId,
             page,
             PageSize,
             sort,
@@ -52,7 +49,6 @@ public class ProductController : ControllerBase
         var result = new
         {
             CategoryId = categoryId,
-            SubCategoryId = subCategoryId,
             TotalProducts = totalProducts,
             TotalPages = totalPages,
             CurrentPage = page,
@@ -67,6 +63,20 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
         var result = await _productService.GetAsync(id);
+        return Ok(result);
+    }
+
+    [HttpGet("retailers")]
+    public async Task<IActionResult> GetRetailers([FromQuery] int? categoryId)
+    {
+        var result = await _productService.GetRetailersAsync(categoryId);
+        return Ok(result);
+    }
+
+    [HttpGet("brands")]
+    public async Task<IActionResult> GetBrands([FromQuery] int? categoryId)
+    {
+        var result = await _productService.GetBrandsAsync(categoryId);
         return Ok(result);
     }
 }

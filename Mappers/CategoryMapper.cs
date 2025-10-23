@@ -11,11 +11,7 @@ public static class CategoryMapper
         {
             Id = category.Id,
             Name = category.Name,
-            Url = category.Url,
-            Description = category.Description,
-            SubCategories = category.SubCategoryCategories
-                .Select(sc => SubCategoryMapper.MapToDto(sc.SubCategory))
-                .ToList()
+            Keywords = category.Keywords
         };
     }
 }

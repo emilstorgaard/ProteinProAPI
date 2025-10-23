@@ -11,6 +11,7 @@ public class Product
     public required string Description { get; set; }
     public required string Image { get; set; }
     public required string Url { get; set; }
+    public int CategoryId { get; set; }
 
-    public ICollection<ProductSubCategories> ProductSubCategories { get; set; } = new List<ProductSubCategories>();
+    public Category Category { get; set; } = null!;
 }

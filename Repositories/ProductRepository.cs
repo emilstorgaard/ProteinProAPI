@@ -21,7 +21,6 @@ public class ProductRepository : IProductRepository
 
     public async Task<(int TotalProducts, int TotalPages, List<Product> Products)> GetProductsAsync(
         int? categoryId,
-        int? subCategoryId,
         int page,
         int pageSize,
         string? sort,
@@ -35,23 +34,11 @@ public class ProductRepository : IProductRepository
 
         IQueryable<Product> query;
 
-        if (subCategoryId.HasValue)
+        if (categoryId.HasValue)
         {
-            query = _dbContext.ProductSubCategories
-                .AsNoTracking()
-                .Where(psc => psc.SubCategoryId == subCategoryId.Value)
-                .Select(psc => psc.Product)
-                .Distinct();
+            query = _dbContext.Products.AsNoTracking().Where(p => p.CategoryId == categoryId).Distinct();
         }
-        else if (categoryId.HasValue)
-        {
-            query = _dbContext.ProductSubCategories
-                .AsNoTracking()
-                .Where(psc => psc.SubCategory.SubCategoryCategories
-                    .Any(scc => scc.CategoryId == categoryId.Value))
-                .Select(psc => psc.Product)
-                .Distinct();
-        }
+
         else
         {
             query = _dbContext.Products.AsQueryable();
@@ -102,5 +89,35 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetAsync(int id)
     {
         return await _dbContext.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+    }
+
+    public async Task<List<string>> GetRetailersAsync(int? categoryId)
+    {
+        IQueryable<Product> query = _dbContext.Products.AsNoTracking();
+
+        if (categoryId.HasValue)
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+
+        return await query
+            .Select(p => p.Retailer)
+            .Where(r => !string.IsNullOrEmpty(r))
+            .Distinct()
+            .OrderBy(r => r)
+            .ToListAsync();
+    }
+
+    public async Task<List<string>> GetBrandsAsync(int? categoryId)
+    {
+        IQueryable<Product> query = _dbContext.Products.AsNoTracking();
+
+        if (categoryId.HasValue)
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+
+        return await query
+            .Select(p => p.Brand)
+            .Where(b => !string.IsNullOrEmpty(b))
+            .Distinct()
+            .OrderBy(b => b)
+            .ToListAsync();
     }
 }

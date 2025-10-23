@@ -40,11 +40,9 @@ public class Program
             options.UseSqlServer(connectionString));
 
         builder.Services.AddScoped<ICategoryService, CategoryService>();
-        builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
         builder.Services.AddScoped<IProductService, ProductsService>();
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-        builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
     }
 

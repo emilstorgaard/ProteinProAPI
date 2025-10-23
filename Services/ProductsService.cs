@@ -20,11 +20,10 @@ public class ProductsService : IProductService
         return products.Select(product => ProductMapper.MapToDto(product)).ToList();
     }
 
-    public async Task<(int TotalProducts, int TotalPages, List<ProductDto> Products)> GetProductsAsync(int? categoryId, int? subCategoryId, int page, int pageSize, string? sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search)
+    public async Task<(int TotalProducts, int TotalPages, List<ProductDto> Products)> GetProductsAsync(int? categoryId, int page, int pageSize, string? sort, decimal? minPrice, decimal? maxPrice, string? brand, string? retailer, string? search)
     {
         var (totalProducts, totalPages, products) = await _productRepository.GetProductsAsync(
             categoryId,
-            subCategoryId,
             page,
             pageSize,
             sort,
@@ -44,5 +43,17 @@ public class ProductsService : IProductService
     {
         var product = await _productRepository.GetAsync(id);
         return ProductMapper.MapToDto(product);
+    }
+
+    public async Task<List<string>> GetRetailersAsync(int? categoryId)
+    {
+        var retailers = await _productRepository.GetRetailersAsync(categoryId);
+        return retailers;
+    }
+
+    public async Task<List<string>> GetBrandsAsync(int? categoryId)
+    {
+        var brands = await _productRepository.GetBrandsAsync(categoryId);
+        return brands;
     }
 }
