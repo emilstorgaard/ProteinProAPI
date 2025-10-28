@@ -32,17 +32,10 @@ public class ProductRepository : IProductRepository
     {
         if (page <= 0) page = 1;
 
-        IQueryable<Product> query;
+        IQueryable<Product> query = _dbContext.Products.AsNoTracking();
 
         if (categoryId.HasValue)
-        {
-            query = _dbContext.Products.AsNoTracking().Where(p => p.CategoryId == categoryId).Distinct();
-        }
-
-        else
-        {
-            query = _dbContext.Products.AsQueryable();
-        }
+            query = query.Where(p => p.CategoryId == categoryId);
 
         if (minPrice.HasValue)
             query = query.Where(p => Convert.ToDecimal(p.Price) >= minPrice.Value);
@@ -70,6 +63,7 @@ public class ProductRepository : IProductRepository
         {
             "price-low" => query.OrderBy(p => Convert.ToDecimal(p.Price)),
             "price-high" => query.OrderByDescending(p => Convert.ToDecimal(p.Price)),
+            "savings" => query.OrderByDescending(p => (Convert.ToDecimal(p.OriginalPrice) - Convert.ToDecimal(p.Price))),
             _ => query.OrderBy(p => p.Id)
         };
 

@@ -15,6 +15,7 @@ public static class ProductMapper
             Brand = product.Brand,
             Name = product.Name,
             Price = product.Price,
+            OriginalPrice = product.OriginalPrice,
             Description = product.Description,
             Image = product.Image,
             Url = product.Url

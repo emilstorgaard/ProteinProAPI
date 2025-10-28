@@ -8,6 +8,7 @@ public class ProductDto
     public required string Brand { get; set; }
     public required string Name { get; set; }
     public required string Price { get; set; }
+    public required string OriginalPrice { get; set; }
     public required string Description { get; set; }
     public required string Image { get; set; }
     public required string Url { get; set; }

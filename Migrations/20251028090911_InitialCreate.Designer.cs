@@ -11,7 +11,7 @@ using ProteinProAPI.Database;
 namespace ProteinProAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251020115742_InitialCreate")]
+    [Migration("20251028090911_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,6 +32,10 @@ namespace ProteinProAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Keywords")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,60 +52,70 @@ namespace ProteinProAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Keywords = "protein, whey, isolat, proteinpulver",
+                            Image = "proteinpulver.jpg",
+                            Keywords = "whey, isolat, proteinpulver",
                             Name = "Proteinpulver"
                         },
                         new
                         {
                             Id = 2,
+                            Image = "kreatin.jpg",
                             Keywords = "kreatin, creatine, creapure",
                             Name = "Kreatin"
                         },
                         new
                         {
                             Id = 3,
-                            Keywords = "weight gainer, mass gainer, vægttilskud, gainer",
+                            Image = "weightGainer.jpg",
+                            Keywords = "weight gainer, mass gainer, vægttilskud, gainer, weight-gainer, mass-gainer",
                             Name = "Weight gainer"
                         },
                         new
                         {
                             Id = 4,
-                            Keywords = "pre workout, preworkout",
+                            Image = "preworkout.jpg",
+                            Keywords = "pre workout, preworkout, pre-workout",
                             Name = "Pre workout"
                         },
                         new
                         {
                             Id = 5,
+                            Image = "proteinbar.jpg",
                             Keywords = "proteinbar, protein bar, barer, protein snack",
                             Name = "Proteinbarer"
                         },
                         new
                         {
                             Id = 6,
+                            Image = "elektrolytter.jpg",
                             Keywords = "elektrolyt, elektrolytter, electrolyte",
                             Name = "Elektrolytter"
                         },
                         new
                         {
                             Id = 7,
-                            Keywords = "gel",
-                            Name = "Gel"
+                            Image = "gel.jpg",
+                            Keywords = "gel, gels",
+                            Name = "Gels"
                         },
                         new
                         {
                             Id = 8,
-                            Keywords = "snack, nødder, tørret frugt, bars, chips",
+                            Image = "snacks.jpg",
+                            Keywords = "snack, nødder, tørret frugt, bars, chips, topping, sirup, toppings",
                             Name = "Snacks"
                         },
                         new
                         {
                             Id = 9,
-                            Keywords = "shaker, bottle",
+                            Image = "tilbehør.jpg",
+                            Keywords = "shaker, bottle, tøj, sko, bælte, taske, hat, kasket",
                             Name = "Tilbehør"
                         },
                         new
                         {
                             Id = 10,
+                            Image = "other.jpg",
                             Keywords = "",
                             Name = "Andet"
                         });
@@ -135,6 +149,10 @@ namespace ProteinProAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalPrice")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
